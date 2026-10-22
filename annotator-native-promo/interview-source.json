@@ -1,0 +1,26 @@
+{
+  "path": "videos/annotator-native-promo/assets/native-interview-source.mp4",
+  "width": 2880,
+  "height": 1862,
+  "duration": 84.18166666666667,
+  "imageWorkspace": false,
+  "gestureSeed": 20260912,
+  "source": "Real-time ScreenCaptureKit recording of scripted native live-desktop actions.",
+  "captureSource": "Recording and native Blur capture include only controlled test-owned windows. No unrelated desktop fallback.",
+  "contentRect": {
+    "x": 551.9066147859921,
+    "y": 642.9571984435797,
+    "width": 1613.6964980544747,
+    "height": 1218.6770428015564
+  },
+  "chapters": [
+    {"name": "Set the problem", "time": 0.020826916676014662},
+    {"name": "Sketch the service", "time": 6.538388875022065},
+    {"name": "People and data", "time": 14.91843904167763},
+    {"name": "Connect the request", "time": 31.33473012500326},
+    {"name": "Name the parts", "time": 47.846754625003086},
+    {"name": "Color and emphasis", "time": 63.0595608750009},
+    {"name": "Blur a sample secret", "time": 74.83942737500183},
+    {"name": "Move and refine", "time": 79.38690391666023}
+  ]
+}

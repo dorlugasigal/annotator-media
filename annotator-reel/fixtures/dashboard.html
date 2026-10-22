@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Orbit dashboard (fictional sample)</title>
+<style>
+  :root { --bg:#f4f5f8; --card:#ffffff; --ink:#151a24; --muted:#6a7383; --line:#e4e7ee; --indigo:#5b5bd6; --red:#e5484d; --green:#2f9e6b; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:1580px; height:690px; overflow:hidden; background:transparent; }
+  body { font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased; }
+  .win { position:absolute; inset:0; background:var(--bg); display:grid; grid-template-rows:40px 1fr; }
+  .bar { display:flex; align-items:center; gap:16px; padding:0 16px; background:#eceef3; border-bottom:1px solid var(--line); }
+  .dots { display:flex; gap:8px; } .dots i { width:12px; height:12px; border-radius:50%; display:block; }
+  .dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+  .url { margin:0 auto; width:520px; height:26px; border-radius:8px; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; color:var(--muted); }
+  .url b { color:var(--ink); font-weight:600; }
+  .body { display:grid; grid-template-columns:212px 1fr; min-height:0; }
+  .side { background:#fbfbfd; border-right:1px solid var(--line); padding:22px 16px; display:flex; flex-direction:column; gap:6px; }
+  .logo { display:flex; align-items:center; gap:10px; font-size:19px; font-weight:750; letter-spacing:-.02em; margin:0 8px 18px; }
+  .logo span { width:26px; height:26px; border-radius:8px; background:conic-gradient(from 200deg, #7c7cf5, #5b5bd6, #3fb6a8, #7c7cf5); display:block; }
+  .nav { display:flex; align-items:center; gap:11px; padding:9px 10px; border-radius:9px; font-size:14px; color:#434b59; font-weight:520; }
+  .nav em { width:18px; height:18px; border-radius:5px; border:2px solid #9aa2b1; display:block; }
+  .nav.on { background:#ebebfb; color:#3c3cb8; } .nav.on em { border-color:#5b5bd6; background:#5b5bd622; }
+  .team { margin-top:auto; display:flex; padding:0 8px; }
+  .team i { width:30px; height:30px; border-radius:50%; border:2px solid #fbfbfd; margin-left:-8px; display:grid; place-items:center; font-style:normal; font-size:11px; font-weight:700; color:#fff; }
+  .team i:first-child{margin-left:0;background:#e0823f}.team i:nth-child(2){background:#5b5bd6}.team i:nth-child(3){background:#2f9e6b}.team i:nth-child(4){background:#c24f9a}
+  .main { padding:24px 30px 26px; display:grid; grid-template-rows:auto auto 1fr; gap:18px; min-height:0; }
+  .head { display:flex; align-items:flex-end; justify-content:space-between; }
+  h1 { font-size:30px; font-weight:760; letter-spacing:-.03em; }
+  .sub { font-size:14px; color:var(--muted); margin-top:4px; }
+  .btns { display:flex; gap:10px; } .btn { height:34px; padding:0 16px; border-radius:9px; border:1px solid var(--line); background:#fff; font-size:13px; font-weight:600; display:flex; align-items:center; }
+  .btn.p { background:var(--indigo); border-color:var(--indigo); color:#fff; }
+  .kpis { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+  .kpi small { font-size:13px; color:var(--muted); font-weight:560; }
+  .kpi .v { display:flex; align-items:baseline; gap:10px; margin-top:6px; }
+  .kpi strong { font-size:32px; font-weight:760; letter-spacing:-.03em; }
+  .chip { font-size:13px; font-weight:700; padding:3px 8px; border-radius:999px; }
+  .up { color:var(--green); background:#2f9e6b17; } .down { color:var(--red); background:#e5484d17; }
+  .grid2 { display:grid; grid-template-columns:1.72fr 1fr; gap:16px; min-height:0; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; display:flex; flex-direction:column; min-height:0; }
+  .card h2 { font-size:15px; font-weight:700; display:flex; justify-content:space-between; }
+  .card h2 span { font-weight:500; color:var(--muted); font-size:13px; }
+  svg.chart { margin-top:8px; flex:1; width:100%; min-height:0; }
+  .notes { list-style:none; margin-top:12px; display:flex; flex-direction:column; gap:14px; }
+  .notes li { display:flex; gap:12px; font-size:15px; line-height:1.45; color:#2a3140; }
+  .notes li::before { content:""; flex:none; width:8px; height:8px; margin-top:8px; border-radius:50%; background:#c3c8d3; }
+  .notes li.hot::before { background:var(--red); }
+  .foot { margin-top:auto; font-size:12px; color:#9aa2b1; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">🔒 <b>orbit.example</b>/launch-week</div><div style="width:52px"></div></div>
+  <div class="body">
+    <aside class="side">
+      <div class="logo"><span></span>orbit</div>
+      <div class="nav on"><em></em>Overview</div>
+      <div class="nav"><em></em>Signups</div>
+      <div class="nav"><em></em>Activation</div>
+      <div class="nav"><em></em>Revenue</div>
+      <div class="nav"><em></em>Feedback</div>
+      <div class="team"><i>AK</i><i>MJ</i><i>RS</i><i>+4</i></div>
+    </aside>
+    <main class="main">
+      <div class="head">
+        <div><h1>Launch week</h1><div class="sub">Sep 22 – 28 · All regions · Sample data</div></div>
+        <div class="btns"><div class="btn">Export</div><div class="btn p">Share report</div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><small>Signups</small><div class="v"><strong>12,480</strong><span class="chip up">▲ 18%</span></div></div>
+        <div class="kpi" data-target="kpiCard"><small>Activation</small><div class="v"><strong data-target="kpi">41%</strong><span class="chip down" data-target="kpiChip">▼ 6%</span></div></div>
+        <div class="kpi"><small>Revenue</small><div class="v"><strong>$38.2k</strong><span class="chip up">▲ 9%</span></div></div>
+        <div class="kpi"><small>Churn</small><div class="v"><strong>2.1%</strong><span class="chip up">▼ 0.4%</span></div></div>
+      </div>
+      <div class="grid2">
+        <section class="card">
+          <h2>Daily signups <span>This week vs last week</span></h2>
+          <svg class="chart" viewBox="0 0 900 300" preserveAspectRatio="none" data-target="chart">
+            <defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5b5bd6" stop-opacity=".22"/><stop offset="1" stop-color="#5b5bd6" stop-opacity="0"/></linearGradient></defs>
+            <g stroke="#eef0f4" stroke-width="2"><line x1="0" y1="50" x2="900" y2="50"/><line x1="0" y1="120" x2="900" y2="120"/><line x1="0" y1="190" x2="900" y2="190"/><line x1="0" y1="260" x2="900" y2="260"/></g>
+            <path d="M0 150 C60 140 110 118 150 112 S240 150 300 170 S390 238 450 244 S540 150 600 118 S690 86 750 74 S850 62 900 58" fill="none" stroke="#c9cdd8" stroke-width="3" stroke-dasharray="7 9"/>
+            <path d="M0 132 C60 118 100 92 150 86 S240 104 300 128 S390 236 450 246 S540 122 600 92 S690 66 750 54 S850 40 900 34 L900 300 L0 300 Z" fill="url(#fill)"/>
+            <path d="M0 132 C60 118 100 92 150 86 S240 104 300 128 S390 236 450 246 S540 122 600 92 S690 66 750 54 S850 40 900 34" fill="none" stroke="#5b5bd6" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="450" cy="246" r="9" fill="#fff" stroke="#e5484d" stroke-width="5" data-target="dip"/>
+          </svg>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#8a92a1;margin-top:6px"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+        </section>
+        <section class="card">
+          <h2>Notes <span>3 open</span></h2>
+          <ul class="notes">
+            <li class="hot"><span data-target="note">Activation fell after the new onboarding shipped.</span></li>
+            <li>The Thursday dip lines up with the email outage.</li>
+            <li>Review the first-run screens with design before Friday.</li>
+          </ul>
+          <div class="foot">Fictional product and data for this recording.</div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

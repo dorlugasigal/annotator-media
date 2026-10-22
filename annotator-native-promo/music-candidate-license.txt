@@ -1,0 +1,16 @@
+"EDM Detection Mode" Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 4.0 License
+https://creativecommons.org/licenses/by/4.0/
+
+Track: https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1500026&Search=Search
+Catalog metadata: https://incompetech.com/music/royalty-free/pieces.json
+Source: https://incompetech.com/music/royalty-free/mp3-royaltyfree/EDM%20Detection%20Mode.mp3
+Artist licensing page: https://incompetech.com/music/royalty-free/licenses/
+Verified 2026-09-12. The artist's catalog lists 128 BPM and a 6:06 duration.
+The track page's credit template specifies CC BY 4.0.
+
+Stored as .media/audio/bgm/bgm_001.mp3 by the media-use resolver.
+Working candidate only; not included in the current website video.
+If used in the final edit, retain the credit, source and license links and
+identify the excerpt/edit. A paid license is needed if attribution is omitted.
+No paid license has been purchased.

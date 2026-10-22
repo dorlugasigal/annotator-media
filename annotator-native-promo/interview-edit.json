@@ -1,0 +1,95 @@
+{
+  "duration": 66.0,
+  "source": "videos/annotator-native-promo/assets/native-interview-source.mp4",
+  "clips": [
+    {
+      "name": "Set the problem",
+      "title": "Start with the question.",
+      "file": "interview-01.mp4",
+      "start": 0.0,
+      "duration": 6.0,
+      "sourceStart": 0.020826916676014662,
+      "sourceDuration": 6.51756195834605,
+      "playbackRate": 1.3578254079887606,
+      "finalHold": 1.2
+    },
+    {
+      "name": "Sketch the service",
+      "title": "Sketch before you explain.",
+      "file": "interview-02.mp4",
+      "start": 6.0,
+      "duration": 9.0,
+      "sourceStart": 6.538388875022065,
+      "sourceDuration": 8.380050166655565,
+      "playbackRate": 1.0743654059814827,
+      "finalHold": 1.2
+    },
+    {
+      "name": "People and data",
+      "title": "Add people, shapes and color.",
+      "file": "interview-03.mp4",
+      "start": 15.0,
+      "duration": 11.0,
+      "sourceStart": 14.91843904167763,
+      "sourceDuration": 16.416291083325632,
+      "playbackRate": 1.675131743196493,
+      "finalHold": 1.2
+    },
+    {
+      "name": "Connect the request",
+      "title": "Show how the parts connect.",
+      "file": "interview-04.mp4",
+      "start": 26.0,
+      "duration": 10.0,
+      "sourceStart": 31.33473012500326,
+      "sourceDuration": 16.512024499999825,
+      "playbackRate": 1.8763664204545254,
+      "finalHold": 1.2
+    },
+    {
+      "name": "Name the parts",
+      "title": "Give every part a name.",
+      "file": "interview-05.mp4",
+      "start": 36.0,
+      "duration": 10.0,
+      "sourceStart": 47.846754625003086,
+      "sourceDuration": 15.212806249997811,
+      "playbackRate": 1.7287279829542965,
+      "finalHold": 1.2
+    },
+    {
+      "name": "Color and emphasis",
+      "title": "Make the read path clear.",
+      "file": "interview-06.mp4",
+      "start": 46.0,
+      "duration": 9.0,
+      "sourceStart": 63.0595608750009,
+      "sourceDuration": 11.779866500000935,
+      "playbackRate": 1.5102392948719148,
+      "finalHold": 1.2
+    },
+    {
+      "name": "Blur a sample secret",
+      "title": "Blur a detail before you share.",
+      "file": "interview-07.mp4",
+      "start": 55.0,
+      "duration": 6.0,
+      "sourceStart": 74.83942737500183,
+      "sourceDuration": 4.547476541658398,
+      "playbackRate": 0.9473909461788329,
+      "finalHold": 1.2
+    },
+    {
+      "name": "Move and refine",
+      "title": "Edit without starting over.",
+      "file": "interview-08.mp4",
+      "start": 61.0,
+      "duration": 5.0,
+      "sourceStart": 79.38690391666023,
+      "sourceDuration": 4.694762750006447,
+      "playbackRate": 1.235463881580644,
+      "finalHold": 1.2
+    }
+  ],
+  "audio": "none"
+}

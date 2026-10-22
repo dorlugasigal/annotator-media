@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/vendor/MorphSVGPlugin.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Bricolage Grotesque";
+        src: url("assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+        font-weight: 200 800;
+        font-style: normal;
+        font-display: block;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; overflow: hidden; background: #0b101a; }
+      #root {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        font-family: "Bricolage Grotesque", sans-serif; color: #f1f4fc;
+        font-kerning: normal; -webkit-font-smoothing: antialiased;
+      }
+      .layer, .scene { position: absolute; inset: 0; }
+      .layer { pointer-events: none; }
+      #bg { background: #0b101a; }
+      .glow { position: absolute; border-radius: 50%; }
+      .mono {
+        position: absolute; font-family: "JetBrains Mono", monospace; font-weight: 700;
+        letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; line-height: 1;
+      }
+      .word {
+        position: absolute; display: block; white-space: nowrap; line-height: 1;
+        font-weight: 760; letter-spacing: -0.05em; transform-origin: 0% 70%;
+      }
+      svg.marks { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+      svg.marks path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+      /* Real takes, rendered 1:1 by tools/camera.py. Wrappers carry the transition filters. */
+      .shot-wrap { position: absolute; inset: 0; overflow: hidden; }
+      .shot-wrap video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+
+      /* Captions: a slab, a clip box that masks the rising words, and marks that act out the words. */
+      .slab { position: absolute; }
+      .box { position: absolute; inset: 0; }
+      .hl { position: absolute; background: #edfa56; transform-origin: 0% 50%; border-radius: 10px; }
+      .caret { position: absolute; background: #0b101a; border-radius: 3px; }
+      .spot-glow { position: absolute; border-radius: 50%; }
+      .flood { position: absolute; inset: 0; }
+      .world { position: absolute; left: 0; top: 0; width: 3840px; height: 2160px; transform-origin: 0 0; }
+      .world-svg { position: absolute; inset: 0; overflow: visible; }
+      .world-svg path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      #blur-rect { position: absolute; border-style: dashed; border-color: #ffb58c; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-width="1920" data-height="1080" data-duration="29.5333" data-layout="desktop">
+      <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+        <defs>
+          <filter id="oblur" x="-60%" y="-20%" width="220%" height="140%" color-interpolation-filters="sRGB">
+            <feGaussianBlur id="oblur-n" in="SourceGraphic" stdDeviation="0 0" />
+          </filter>
+          <filter id="wblur-a" x="-40%" y="-20%" width="180%" height="140%" color-interpolation-filters="sRGB">
+            <feGaussianBlur id="wblur-a-n" in="SourceGraphic" stdDeviation="0 0" />
+          </filter>
+          <filter id="wblur-b" x="-40%" y="-20%" width="180%" height="140%" color-interpolation-filters="sRGB">
+            <feGaussianBlur id="wblur-b-n" in="SourceGraphic" stdDeviation="0 0" />
+          </filter>
+        </defs>
+      </svg>
+      <div id="bg" class="layer"></div>
+
+      <!-- Real Annotator takes (scripted pointer, sample content) through the virtual camera. -->
+      <div id="sw-dash" class="shot-wrap">
+        <video id="v-dash" class="clip" src="assets/shots/dashboard-16x9.mp4" data-start="1.3846" data-duration="12.0000" data-track-index="1" muted playsinline></video>
+      </div>
+      <div id="sw-smart" class="shot-wrap">
+        <video id="v-smart" class="clip" src="assets/shots/smart-16x9.mp4" data-start="13.3846" data-duration="5.5385" data-track-index="2" muted playsinline></video>
+      </div>
+      <div id="sw-focus" class="shot-wrap">
+        <video id="v-focus" class="clip" src="assets/shots/focus-16x9.mp4" data-start="18.9231" data-duration="7.3846" data-track-index="3" muted playsinline></video>
+      </div>
+
+      <!-- Toolbar tour: labels pinned to the footage (source px) on a layer that follows the camera. -->
+      <div id="tour" class="scene clip" data-start="2.3077" data-duration="2.6769" data-track-index="9">
+        <div id="tour-world" class="world" data-layout-allow-overflow="">
+          <svg id="tour-svg" class="world-svg" width="3840" height="2160" viewBox="0 0 3840 2160" aria-hidden="true">
+            <path id="tb0" /><path id="tb1" /><path id="tb2" /><path id="tb3" /><path id="tb4" />
+          </svg>
+          <div id="tl0" class="word tlabel">Tool library</div>
+          <div id="tl1" class="word tlabel">Effects</div>
+          <div id="tl2" class="word tlabel">Pen, text and highlighter</div>
+          <div id="tl3" class="word tlabel">Arrows and lines</div>
+          <div id="tl4" class="word tlabel">Shapes</div>
+        </div>
+      </div>
+
+      <!-- Dashboard captions -->
+      <div id="c1" class="scene clip" data-start="5.4692" data-duration="1.1962" data-track-index="10">
+        <div id="c1-slab" class="slab"></div>
+        <div id="c1-box" class="box"><div id="c1-w0" class="word">Circle</div><div id="c1-w1" class="word">it.</div></div>
+        <svg id="c1-svg" class="marks"><path id="c1-m0" /></svg>
+      </div>
+      <div id="c2" class="scene clip" data-start="8.3538" data-duration="1.2462" data-track-index="11">
+        <div id="c2-slab" class="slab"></div>
+        <div id="c2-box" class="box"><div id="c2-w0" class="word">Point</div><div id="c2-w1" class="word">at</div><div id="c2-w2" class="word">it.</div></div>
+        <svg id="c2-svg" class="marks"><path id="c2-u0" /><path id="c2-u1" /><path id="c2-m0" /><path id="c2-m1" /></svg>
+      </div>
+      <div id="c3" class="scene clip" data-start="9.6000" data-duration="1.1731" data-track-index="12">
+        <div id="c3-slab" class="slab"></div>
+        <div id="c3-box" class="box"><div id="c3-w0" class="word">Bend</div><div id="c3-w1" class="word">it.</div></div>
+        <svg id="c3-svg" class="marks"><path id="c3-u0" /><path id="c3-u1" /><path id="c3-m0" /><path id="c3-m1" /></svg>
+      </div>
+      <div id="c4" class="scene clip" data-start="11.3538" data-duration="2.0308" data-track-index="13">
+        <div id="c4-slab" class="slab"></div>
+        <div id="c4-box" class="box">
+          <div id="c4-hl" class="hl"></div>
+          <div id="c4-w0" class="word">Highlight</div><div id="c4-w1" class="word">it.</div>
+          <div id="c4-w0h" class="word" data-layout-allow-overlap="">Highlight</div>
+        </div>
+      </div>
+
+      <!-- Smart Draw captions -->
+      <div id="c5" class="scene clip" data-start="13.5462" data-duration="1.5923" data-track-index="14">
+        <div id="c5-slab" class="slab"></div>
+        <div id="c5-box" class="box"><div id="c5-w0" class="word">Draw</div><div id="c5-w1" class="word">it</div><div id="c5-w2" class="word">rough.</div></div>
+        <svg id="c5-svg" class="marks"><path id="c5-m0" /></svg>
+      </div>
+      <div id="c6" class="scene clip" data-start="15.1385" data-duration="1.4308" data-track-index="15">
+        <div id="c6-slab" class="slab"></div>
+        <div id="c6-box" class="box"><div id="c6-w0" class="word">It</div><div id="c6-w1" class="word">snaps</div><div id="c6-w2" class="word">clean.</div></div>
+        <svg id="c6-svg" class="marks"><path id="c6-m0" /></svg>
+      </div>
+      <div id="c7" class="scene clip" data-start="16.5692" data-duration="2.3538" data-track-index="16">
+        <div id="c7-slab" class="slab"></div>
+        <div id="c7-box" class="box"><div id="c7-w0" class="word">Add a note.</div><div id="c7-caret" class="caret"></div></div>
+      </div>
+
+      <!-- Focus captions -->
+      <div id="c8" class="scene clip" data-start="19.2923" data-duration="1.2923" data-track-index="17">
+        <div id="c8-slab" class="slab"></div>
+        <div id="c8-box" class="box"><div id="c8-w0" class="word">Show</div><div id="c8-w1" class="word">your</div><div id="c8-w2" class="word">pointer.</div></div>
+        <svg id="c8-svg" class="marks"><path id="c8-m3" /><path id="c8-m0" /><path id="c8-m1" /><path id="c8-m2" /></svg>
+      </div>
+      <div id="c9" class="scene clip" data-start="20.5846" data-duration="2.4654" data-track-index="18">
+        <div id="c9-slab" class="slab"></div>
+        <div id="c9-box" class="box">
+          <div id="c9-glow" class="spot-glow"></div>
+          <div id="c9-w0" class="word">Spotlight</div><div id="c9-w1" class="word">it.</div>
+          <div id="c9-lit" class="layer"><div id="c9-w0l" class="word">Spotlight</div><div id="c9-w1l" class="word">it.</div></div>
+        </div>
+        <svg id="c9-svg" class="marks"><circle id="c9-r0" fill="none" /><circle id="c9-r1" fill="none" /><circle id="c9-r2" fill="none" /></svg>
+      </div>
+      <div id="c10" class="scene clip" data-start="23.4462" data-duration="2.7000" data-track-index="19">
+        <div id="c10-slab" class="slab"></div>
+        <div id="c10-box" class="box"><div id="c10-w0" class="word">Blur</div><div id="c10-w1" class="word">it.</div></div>
+        <svg id="c10-svg" class="marks"><path id="c10-m0" /></svg>
+      </div>
+
+      <!-- The Effects button gets a hand-drawn ring as the pointer chooses it (pinned to the footage). -->
+      <div id="fxmark" class="scene clip" data-start="23.1462" data-duration="1.2000" data-track-index="24">
+        <div id="fx-world" class="world" data-layout-allow-overflow="">
+          <svg id="fx-svg" class="world-svg" width="3840" height="2160" viewBox="0 0 3840 2160" aria-hidden="true"><path id="fx-u" /><path id="fx-m" /></svg>
+        </div>
+      </div>
+      <!-- Cuts -->
+      <div id="swoosh" class="scene clip" data-start="13.1846" data-duration="0.4200" data-track-index="20">
+        <svg class="marks"><path id="swoosh-p" /></svg>
+      </div>
+      <div id="flash" class="scene clip" data-start="18.8831" data-duration="0.2200" data-track-index="21">
+        <div id="flash-f" class="flood" style="background: #f1f4fc; opacity: 0"></div>
+      </div>
+      <div id="ring" class="scene clip" data-start="18.8731" data-duration="0.3600" data-track-index="22">
+        <svg class="marks"><circle id="ring-c" fill="none" stroke="#abc7ff" /></svg>
+      </div>
+      <div id="blurT" class="scene clip" data-start="25.8362" data-duration="0.5500" data-track-index="23">
+        <div id="blur-rect"></div>
+      </div>
+
+      <!-- Hook: frame 0 is the end card; dive, then Draw / over / any app. -->
+      <div id="ecA" class="scene clip" data-start="0" data-duration="0.5" data-track-index="30">
+        <div id="ecA-in" class="layer">
+          <div class="glow ec-glow-a" id="ecA-ga"></div>
+          <div class="glow ec-glow-b" id="ecA-gb"></div>
+          <div class="word ec-l1" id="ecA-l1" data-layout-allow-overlap="">Draw over</div>
+          <div class="word ec-l2" id="ecA-l2">any app.</div>
+          <svg class="marks" id="ecA-svg"><path id="ecA-ell" /><path id="ecA-arrow" /><path id="ecA-head" /></svg>
+          <div class="word ec-wm" id="ecA-wm">annotator<span class="ec-dot">.</span></div>
+          <div class="mono ec-tag" id="ecA-tag">Free for Mac</div>
+        </div>
+      </div>
+      <div id="hkDraw" class="scene clip" data-start="0.1000" data-duration="0.8231" data-track-index="31">
+        <div id="hkDraw-in" class="layer">
+          <div class="flood" style="background: #ffb58c"></div>
+          <div class="word hk-word" id="hk-draw-w">Draw</div>
+          <svg class="marks"><path id="hk-draw-ul" /></svg>
+        </div>
+      </div>
+      <div id="hkOver" class="scene clip" data-start="0.9231" data-duration="0.4615" data-track-index="32">
+        <div id="hkOver-in" class="layer">
+          <div class="flood" style="background: #abc7ff"></div>
+          <div class="word hk-word" id="hk-over-w">over</div>
+          <svg class="marks"><path id="hk-over-arc" /><path id="hk-over-head" /></svg>
+        </div>
+      </div>
+      <div id="hkAny" class="scene clip" data-start="1.3846" data-duration="0.5115" data-track-index="33">
+        <svg id="hk-any-svg" class="marks">
+          <defs>
+            <mask id="hk-any-mask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
+              <rect id="hk-any-mrect" x="-100" y="-100" width="2200" height="1600" fill="#fff" />
+              <text id="hk-any-mtext" fill="#000">any app.</text>
+            </mask>
+          </defs>
+          <g id="hk-any-g">
+            <rect id="hk-any-rect" x="-100" y="-100" width="2200" height="1600" fill="#0b101a" mask="url(#hk-any-mask)" />
+            <text id="hk-any-otext" fill="none" stroke="#ffb58c" stroke-width="6" stroke-linejoin="round">any app.</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- End card: settles on the exact frame the reel opens with. -->
+      <div id="ecB" class="scene clip" data-start="26.2477" data-duration="3.2856" data-track-index="34">
+        <div id="ecB-in" class="layer">
+          <div class="glow ec-glow-a" id="ecB-ga"></div>
+          <div class="glow ec-glow-b" id="ecB-gb"></div>
+          <div class="word ec-l1" id="ecB-l1" data-layout-allow-overlap="">Draw over</div>
+          <div class="word ec-l2" id="ecB-l2">any app.</div>
+          <svg class="marks" id="ecB-svg"><path id="ecB-ell" /><path id="ecB-arrow" /><path id="ecB-head" /></svg>
+          <div class="word ec-wm" id="ecB-wm">annotator<span class="ec-dot">.</span></div>
+          <div class="mono ec-tag" id="ecB-tag">Free for Mac</div>
+        </div>
+      </div>
+
+      <!-- Music bed and foley, pre-mixed and limited by tools/build_audio.py. The website files are silent. -->
+      <audio id="music" data-timeline-role="music" src="assets/audio/mix.wav" data-start="0.0000" data-duration="29.5333" data-track-index="40" data-volume="1"></audio>
+    </div>
+    <script src="assets/shots/dashboard-16x9.poses.js"></script>
+    <script src="assets/shots/smart-16x9.poses.js"></script>
+    <script src="assets/shots/focus-16x9.poses.js"></script>
+    <script src="src/reel-lib.js"></script>
+    <script src="src/reel-layout.js"></script>
+    <script src="src/scene-hook.js"></script>
+    <script src="src/scene-shots.js"></script>
+    <script src="src/scene-end.js"></script>
+    <script src="src/reel-main.js"></script>
+    <script>
+      window.R.ready.then(function (built) {
+        window.__timelines["main"] = built.tl;
+        if (typeof window.__hfForceTimelineRebind === "function") window.__hfForceTimelineRebind();
+      });
+    </script>
+  </body>
+</html>

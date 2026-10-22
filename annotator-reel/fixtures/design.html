@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Checkout review (fictional sample)</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:1580px; height:690px; overflow:hidden; background:transparent; }
+  body { font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; color:#e8eaf0; -webkit-font-smoothing:antialiased; }
+  .win { position:absolute; inset:0; background:#17181c; display:grid; grid-template-rows:40px 1fr; }
+  .bar { display:flex; align-items:center; gap:18px; padding:0 16px; background:#202127; border-bottom:1px solid #2c2d35; }
+  .dots { display:flex; gap:8px; } .dots i { width:12px; height:12px; border-radius:50%; display:block; }
+  .dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+  .title { font-size:13px; font-weight:600; color:#c9ccd6; }
+  .tabs { display:flex; gap:4px; margin-left:22px; } .tabs span { font-size:12px; padding:5px 12px; border-radius:7px; color:#9da1ad; }
+  .tabs span.on { background:#2f3039; color:#fff; }
+  .share { margin-left:auto; height:26px; padding:0 14px; border-radius:7px; background:#7c6cf2; color:#fff; font-size:12px; font-weight:650; display:flex; align-items:center; }
+  .body { display:grid; grid-template-columns:200px 1fr 230px; min-height:0; }
+  .layers { background:#1c1d22; border-right:1px solid #2c2d35; padding:16px 12px; font-size:12.5px; color:#b7bac5; display:flex; flex-direction:column; gap:4px; }
+  .layers b { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#737785; margin:4px 8px 8px; }
+  .layers div { padding:7px 8px; border-radius:6px; display:flex; gap:8px; align-items:center; }
+  .layers div.on { background:#2a2b33; color:#fff; }
+  .layers div i { width:12px; height:12px; border:1.5px solid #8b8f9c; border-radius:3px; display:block; }
+  .canvas { position:relative; background:#121317; background-image:radial-gradient(#2a2c33 1.2px, transparent 1.3px); background-size:22px 22px; overflow:hidden; }
+  .inspect { background:#1c1d22; border-left:1px solid #2c2d35; padding:16px 16px; font-size:12px; color:#9da1ad; display:flex; flex-direction:column; gap:12px; }
+  .inspect b { color:#e8eaf0; font-size:12.5px; }
+  .row { display:flex; justify-content:space-between; } .row span:last-child { color:#e8eaf0; }
+  .sw { display:flex; gap:6px; } .sw i { width:22px; height:22px; border-radius:6px; display:block; }
+  .phone { position:absolute; top:44px; width:236px; height:470px; border-radius:30px; background:#fbfbfc; border:6px solid #2b2d34; box-shadow:0 24px 50px #0008; overflow:hidden; color:#141821; }
+  .label { position:absolute; top:18px; font-size:12px; color:#8b8f9c; font-weight:600; }
+  .ph-top { height:40px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; }
+  .scr { padding:6px 16px; }
+  .scr h3 { font-size:19px; font-weight:760; letter-spacing:-.02em; margin:4px 0 12px; }
+  .item { display:flex; gap:10px; align-items:center; margin-bottom:12px; }
+  .thumb { width:52px; height:52px; border-radius:12px; flex:none; }
+  .item p { font-size:13px; font-weight:650; } .item small { font-size:11.5px; color:#6c7383; }
+  .price { margin-left:auto; font-size:13px; font-weight:700; }
+  .total { display:flex; justify-content:space-between; font-size:14px; font-weight:750; border-top:1px solid #eceef2; padding-top:12px; margin-top:6px; }
+  .cta { margin-top:18px; height:46px; border-radius:14px; background:#7c6cf2; color:#fff; font-weight:750; font-size:15px; display:grid; place-items:center; }
+  .field { height:40px; border-radius:10px; border:1.5px solid #e1e4ea; margin-bottom:10px; padding:0 12px; display:flex; align-items:center; font-size:13px; color:#6c7383; }
+  .field.f { border-color:#7c6cf2; color:#141821; }
+  .two { display:flex; gap:8px; } .two .field { flex:1; }
+  .card { height:108px; border-radius:16px; margin:2px 0 14px; padding:14px; color:#fff; background:linear-gradient(135deg, #7c6cf2, #3fb6a8); display:flex; flex-direction:column; justify-content:space-between; font-size:12px; }
+  .card strong { font-size:15px; letter-spacing:.12em; }
+  .pay { margin:14px auto 0; width:86px; height:26px; border-radius:8px; background:#7c6cf2; color:#fff; font-weight:700; font-size:11px; display:grid; place-items:center; }
+  .fine { font-size:10.5px; color:#8b8f9c; text-align:center; margin-top:10px; }
+  .done { display:grid; place-items:center; padding-top:70px; text-align:center; }
+  .check { width:88px; height:88px; border-radius:50%; background:#2f9e6b; display:grid; place-items:center; margin:0 auto 18px; }
+  .check::after { content:""; width:34px; height:18px; border-left:6px solid #fff; border-bottom:6px solid #fff; transform:rotate(-45deg) translate(3px,-4px); }
+  .done h3 { font-size:21px; } .done p { font-size:13px; color:#6c7383; margin-top:6px; }
+  .comment { position:absolute; width:26px; height:26px; border-radius:50% 50% 50% 4px; background:#f2994a; color:#fff; font-size:11px; font-weight:800; display:grid; place-items:center; box-shadow:0 6px 14px #0006; }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="title">Checkout v3 — Review</div><div class="tabs"><span class="on">Design</span><span>Prototype</span><span>Handoff</span></div><div class="share">Share</div></div>
+  <div class="body">
+    <aside class="layers"><b>Frames</b><div><i></i>Cart</div><div class="on"><i></i>Payment</div><b style="margin-top:14px">Components</b><div><i></i>Button / primary</div><div><i></i>Field / text</div><div><i></i>Card / preview</div></aside>
+    <section class="canvas">
+      <div class="label" style="left:70px">Cart</div>
+      <div class="phone" style="left:64px">
+        <div class="ph-top">9:41</div>
+        <div class="scr"><h3>Your cart</h3>
+          <div class="item"><div class="thumb" style="background:linear-gradient(135deg,#ffb58c,#f2994a)"></div><div><p>Trail runners</p><small>Size 42 · Coral</small></div><div class="price">$96</div></div>
+          <div class="item"><div class="thumb" style="background:linear-gradient(135deg,#abc7ff,#5b5bd6)"></div><div><p>Rain shell</p><small>Medium · Night</small></div><div class="price">$128</div></div>
+          <div class="item"><div class="thumb" style="background:linear-gradient(135deg,#9fe3c5,#2f9e6b)"></div><div><p>Wool socks</p><small>Pack of 3</small></div><div class="price">$24</div></div>
+          <div class="total"><span>Total</span><span>$248</span></div>
+          <div class="cta">Checkout</div>
+        </div>
+      </div>
+      <div class="label" style="left:380px">Payment</div>
+      <div class="phone" style="left:374px" data-target="payPhone">
+        <div class="ph-top">9:41</div>
+        <div class="scr"><h3>Payment</h3>
+          <div class="card"><span>Orbit card</span><strong>•••• 4242</strong></div>
+          <div class="field f">Name on card</div>
+          <div class="two"><div class="field">MM / YY</div><div class="field">CVC</div></div>
+          <div class="field">Billing ZIP</div>
+          <div class="pay" data-target="pay">Pay now</div>
+          <div class="fine">You won't be charged until you confirm.</div>
+        </div>
+      </div>
+      <div class="comment" style="left:30px;top:300px">1</div>
+      <div data-target="labelSpot" style="position:absolute;left:720px;top:360px;width:330px;height:80px"></div>
+    </section>
+    <aside class="inspect"><b>Payment</b><div class="row"><span>Width</span><span>375</span></div><div class="row"><span>Height</span><span>812</span></div><div class="row"><span>Fill</span><span>#FBFBFC</span></div><b style="margin-top:8px">Colors</b><div class="sw"><i style="background:#7c6cf2"></i><i style="background:#3fb6a8"></i><i style="background:#f2994a"></i><i style="background:#2f9e6b"></i></div><b style="margin-top:8px">Notes</b><div>Primary action should read at a glance.</div><div style="margin-top:auto;color:#6d7180">Fictional product for this recording.</div></aside>
+  </div>
+</div>
+</body>
+</html>

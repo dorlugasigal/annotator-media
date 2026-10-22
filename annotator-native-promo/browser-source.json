@@ -1,0 +1,14 @@
+{
+  "path": "assets/native-browser-blur.mp4",
+  "width": 2880,
+  "height": 1860,
+  "duration": 6.141666666666667,
+  "imageWorkspace": false,
+  "source": "Actual isolated Chromium window showing a localhost-only fictional workspace; native Annotator Blur.",
+  "ownership": "Browser PID obtained from Playwright launchServer, matched to the exact ScreenCaptureKit window. Other windows excluded.",
+  "browserRect": {"x": 140.07782101167314, "y": 140.07782101167314, "width": 1680.9338521400778, "height": 1190.6614785992217},
+  "targetRect": {"x": 1333.5408560311282, "y": 474.1634241245136, "width": 434.24124513618676, "height": 557.50972762645915},
+  "adKeptSourceRanges": [[0, 2], [2.9, 6]],
+  "adFinalHoldSeconds": 2.1,
+  "note": "The ad omits the recorded capture-layer startup transition. It is not a first-mask latency demonstration. The app's conservative protection behavior is unchanged."
+}

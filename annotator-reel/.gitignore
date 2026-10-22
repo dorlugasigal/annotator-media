@@ -1,0 +1,15 @@
+.venv/
+snapshots/
+renders/
+build/
+.thumbnails/
+.hyperframes/
+.media/
+.waveform-cache/
+__pycache__/
+# Generated only while rendering the portrait cut (tools/make_phone.py).
+phone.html
+# Rebuilt by tools/build_audio.py; the composition only needs mix.wav.
+assets/audio/music-bed.wav
+assets/audio/foley-bed.wav
+assets/audio/foley-bed.json

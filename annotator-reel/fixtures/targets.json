@@ -1,0 +1,122 @@
+{
+  "dashboard": {
+    "width": 1580,
+    "height": 690,
+    "targets": {
+      "kpiCard": {
+        "x": 573,
+        "y": 138,
+        "width": 315,
+        "height": 96
+      },
+      "kpi": {
+        "x": 592,
+        "y": 179,
+        "width": 63.77,
+        "height": 38
+      },
+      "kpiChip": {
+        "x": 665.77,
+        "y": 194,
+        "width": 51.53,
+        "height": 22
+      },
+      "chart": {
+        "x": 263,
+        "y": 295,
+        "width": 775,
+        "height": 331
+      },
+      "dip": {
+        "x": 642.75,
+        "y": 556.49,
+        "width": 15.5,
+        "height": 19.86
+      },
+      "note": {
+        "x": 1116,
+        "y": 299,
+        "width": 331.64,
+        "height": 21.75
+      }
+    }
+  },
+  "design": {
+    "width": 1580,
+    "height": 690,
+    "targets": {
+      "payPhone": {
+        "x": 574,
+        "y": 84,
+        "width": 236,
+        "height": 470
+      },
+      "pay": {
+        "x": 649,
+        "y": 450,
+        "width": 86,
+        "height": 26
+      },
+      "labelSpot": {
+        "x": 920,
+        "y": 400,
+        "width": 330,
+        "height": 80
+      }
+    }
+  },
+  "gallery": {
+    "width": 1580,
+    "height": 690,
+    "targets": {
+      "img0": {
+        "x": 28,
+        "y": 108,
+        "width": 367.5,
+        "height": 269
+      },
+      "img1": {
+        "x": 413.5,
+        "y": 108,
+        "width": 367.5,
+        "height": 269
+      },
+      "hero": {
+        "x": 799,
+        "y": 108,
+        "width": 367.5,
+        "height": 269
+      },
+      "img3": {
+        "x": 1184.5,
+        "y": 108,
+        "width": 367.5,
+        "height": 269
+      },
+      "busy": {
+        "x": 28,
+        "y": 395,
+        "width": 367.5,
+        "height": 269
+      },
+      "img5": {
+        "x": 413.5,
+        "y": 395,
+        "width": 367.5,
+        "height": 269
+      },
+      "img6": {
+        "x": 799,
+        "y": 395,
+        "width": 367.5,
+        "height": 269
+      },
+      "img7": {
+        "x": 1184.5,
+        "y": 395,
+        "width": 367.5,
+        "height": 269
+      }
+    }
+  }
+}
